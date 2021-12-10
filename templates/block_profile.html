@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+<hr>
+{% block content %}
+<article class="media content-section">
+    <div class="media-body">
+      <div class="article-metadata">
+        {% if block['index'] %}
+          <small class="text-muted">{{ hash }}</small>
+        {% else %}
+          <small class="text-muted">Genesis Block</small>
+        {% endif %}
+      </div>
+      {% if block['index'] %}
+        {% if block['index'] in flagged_blocks %}
+            {% if session['user'] == 'crowd_auditor' %}
+                <div class="text-right">
+                    <button type="button" class="btn btn-danger" disabled>Flagged as Misinformation</button><br><br>
+                </div>
+            {% endif %}
+            <div class="alert alert-danger" role="alert">
+                This post has been flagged as Misinformation
+            </div>
+        {% else %}
+            {% if session['user'] == 'crowd_auditor' %}
+            <a style="float: right;" class="btn btn-danger" href="{{ url_for('flag_misinformation', index=block['index']) }}">Flag Misinformation</a>
+            {% endif %}
+        {% endif %}
+      <p class="article-content"></p>
+      <img class="rounded-circle article-img mx-auto d-block" src="{{ url_for('static', filename='img/block.jpg') }}"><hr>
+      <p style="text-align: center; padding-right: 10px;">* {{ block['data']['agency'] }} *</p>
+      <h1 style="text-align:center;">{{ block['data']['title'] }}</h1>
+      <h5 style="text-align: right; padding-right: 10px;">- {{ block['data']['author'] }}</h5>
+      <p style="text-align: right; padding-right: 10px;">{{ block['data']['date'] }}</p>
+      <hr>
+      <table class="table">
+        <tbody>
+            <tr>
+                <img style="max-width:50%;display:block; margin-left: auto; margin-right: auto;" src="{{ url_for('static', filename='img/news.jpg') }}" alt="">
+                <hr>
+            </tr>
+            <tr>
+                <p>
+                    {{ block['data']['content'] }}
+                </p>
+            </tr>
+            <hr>
+        </tbody>
+      </table>
+        </p>
+      {% else %}
+        <p class="article-content">
+          "title"         : {{ block['title'] }}
+          "info"          : {{ block['info'] }}
+          "hash"          : {{ hash(block) }}
+        </p>
+      {% endif %}
+
+      
+    </div>
+  </article>
+  {% endblock content %}

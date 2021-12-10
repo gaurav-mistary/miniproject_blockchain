@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+<hr>
+{% block content %}
+<article class="media content-section">
+    <div class="media-body">
+      <div class="article-metadata">
+        {% if block['index'] %}
+          <small class="text-muted">{{ block['index'] }}</small>
+        {% else %}
+          <small class="text-muted">Genesis Block</small>
+        {% endif %}
+      </div>
+      {% if block['index'] %}
+      <img class="rounded-circle article-img mx-auto d-block" src="{{ url_for('static', filename='img/profile.png') }}">
+        <p class="article-content">
+          <img class="rounded-circle article-img mx-auto d-block" src="{{ url_for('static', filename='img/block.jpg') }}"> <hr>
+          <table class="table">
+            <thead>
+              <th>Field</th>
+              <th style="text-align:center">Value</th>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Index</td>
+                <td>{{ block['index'] }}</td>
+              </tr>
+              <tr>
+                <td>Previous Hash</td>
+                <td>{{ block['previous_hash'] }}</td>
+              </tr>
+              <tr>
+                <td>Title</td>
+                <td>{{ block['data']['title'] }}</td>
+              </tr>
+              <tr>
+                <td>Author</td>
+                <td>{{ block['data']['author'] }}</td>
+              </tr>
+              <tr>
+                <td>Date of Publishing</td>
+                <td>{{ block['data']['date'] }}</td>
+              </tr>
+              <tr>
+                <td>News Agency</td>
+                <td>{{ block['data']['agency'] }}</td>
+              </tr>
+              <tr>
+                <td>Content</td>
+                <td>{{ block['data']['content'] | truncate(100) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </p>
+      {% else %}
+        <p class="article-content">
+          "title"         : {{ block['title'] }}
+          "info"          : {{ block['info'] }}
+          "hash"          : {{ hash(block) }}
+        </p>
+      {% endif %}
+    </div>
+  </article>
+  {% endblock content %}

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+ 
+    {% block styles %}
+    	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
+    {% endblock styles %}
+
+    {% if title %}
+        <title>NewsBlock - {{ title }}</title>
+    {% else %}
+        <title>NewsBlock</title>
+    {% endif %}
+</head>
+<body>
+    <header class="site-header">
+      <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+        <div class="container">
+          <a class="navbar-brand mr-4" href="{{ url_for('index') }}"> {{ server_number }} NewsBlock</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+            <div class="navbar-nav mr-auto">
+              <a class="nav-item nav-link" href="{{ url_for('index') }}">Home</a>
+              <a class="nav-item nav-link" href="{{ url_for('show_chain') }}">Chain</a>
+              {% if session['is_logged_in'] %}
+              {% if session['user'] != 'crowd_auditor' %}
+                <a class="nav-item nav-link" href="{{ url_for('show_wip_chain') }}">WIP-Chain</a>
+                <a class="nav-item nav-link" href="{{ url_for('servers') }}">Servers</a>
+              {% endif %}
+              {% endif %}
+            </div>
+            <!-- Navbar Right Side -->
+            <div class="nav navbar-nav navbar-right">
+              {% if session['user'] == 'news_agency' %}
+                <a class="nav-item nav-link" href="{{ url_for('create_news') }}">Create News</a>
+              {% endif %}
+              {% if session['is_logged_in'] %}
+                <a class="nav-item nav-link" href="#">{{ session['user'] }}</a>
+                <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
+              {% endif %}
+            </div>
+        </div>
+      </nav>
+    </header>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-14">
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                  {{ message }}
+                </div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+          {% block content %}{% endblock %}
+        </div>
+      </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
+
+    {% if title %}
+        <title>NewsBlock - {{ title }}</title>
+    {% else %}
+        <title>NewsBlock</title>
+    {% endif %}
+
+</head>
+<body>
+    <main role="main" class="container">
+        <div class="row">
+          <div class="col-md-14">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                {% for category, message in messages %}
+                  <div class="alert alert-{{ category }}">
+                    {{ message }}
+                  </div>
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
+            <h1 style="text-align:center;">NewsBlock - Blockchain based News Application</h1>
+            <hr>
+            <a style="float: right;" class="btn btn-info" href="{{ url_for('show_chain') }}">Show Chain</a><br><br><br>
+            <div class="content-section"><br>
+                <div>
+                    <p>News Agency? <a class="btn btn-primary btn-block" href="{{ url_for('news_agency_login') }}">Login as Agency</a></p><br>
+                    <p>Editor? <a class="btn btn-primary btn-block" href="{{ url_for('editor_login') }}">Login as Editor</a></p><br>
+                    <p>Crowd Auditor? <a class="btn btn-primary btn-block" href="{{ url_for('crowd_auditor_login') }}">Login as Crowd Auditor</a></p>
+                </div>
+            </div>
+          </div>
+        </div>
+      </main>
+</body>

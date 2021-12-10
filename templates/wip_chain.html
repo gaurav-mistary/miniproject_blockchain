@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if chain_type == 'wipchain' %}
+  {% if show_sync_button %}
+  <a style="float: right;" class="btn btn-info" href="{{ url_for('replace_wip_chain') }}">Sync</a><br><br>
+  {% endif %}
+  <a style="float: right;" class="btn btn-info" href="{{ url_for('check_wip_chain_validity') }}">Validity</a><br><br><br>
+  <h1 style="text-align:center;">Work-In-Progress News Blockchain</h1><br>
+{% else %}
+  {% if show_sync_button %}
+  <a style="float: right;" class="btn btn-info" href="{{ url_for('replace_chain') }}">Sync</a>
+  {% endif %}
+  <a style="float: right;" class="btn btn-info" href="{{ url_for('check_chain_validity') }}">Validity</a>
+  <h1 style="text-align:center;">News Blockchain</h1><br>
+{% endif %}
+
+
+<br>
+{% for block in chain %}
+  <article class="media content-section">
+    <div class="media-body">
+      <div class="article-metadata">
+        {% if block['index'] %}
+          <small class="text-muted">{{ block['index'] }}</small>
+        {% else %}
+          <small class="text-muted">Genesis Block</small>
+        {% endif %}
+      </div>
+      {% if block.get('index') %}
+      <a style="text-decoration:none;" href="{{ url_for('wip_block_profile', index=block['index']) }}">
+      <img class="rounded-circle article-img mx-auto d-block" src="{{ url_for('static', filename='img/block.jpg') }}"> <hr>
+          <table class="table">
+            <thead>
+              <th>Field</th>
+              <th style="text-align:center">Value</th>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Index</td>
+                <td>{{ block['index'] }}</td>
+              </tr>
+              <tr>
+                <td>Previous Hash</td>
+                <td>{{ block['previous_hash'] }}</td>
+              </tr>
+              <tr>
+                <td>Title</td>
+                <td>{{ block['data']['title'] }}</td>
+              </tr>
+              <tr>
+                <td>Author</td>
+                <td>{{ block['data']['author'] }}</td>
+              </tr>
+              <tr>
+                <td>Date of Publishing</td>
+                <td>{{ block['data']['date'] }}</td>
+              </tr>
+              <tr>
+                <td>News Agency</td>
+                <td>{{ block['data']['agency'] }}</td>
+              </tr>
+              <tr>
+                <td>Content</td>
+                <td>{{ block['data']['content'] | truncate(100) }}</td>
+              </tr>
+            </tbody>
+          </table>
+      </a>
+      {% else %}
+        <p class="article-content">
+          "title"         : {{ block['title'] }}
+          "info"          : {{ block['info'] }}
+          "hash"          : {{ hash(block) }}
+        </p>
+      {% endif %}
+    </div>
+  </article>
+  <h3 align="center"><span>&#8595;</span></h3>
+{% endfor %}
+{% endblock content %}
