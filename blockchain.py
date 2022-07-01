@@ -91,12 +91,14 @@ class Blockchain:
 		for node in network:
 			try:
 				response = requests.get(f'http://{node}/get_chain')
+				print(f"Response: {response.status_code}")
 				if response.status_code == 200:
 					length_of_chain = response.json()['Length']
 					chain = response.json()['Chain']
 					if length_of_chain > max_length and self.is_chain_valid(chain):
 						return False
-			except:
+			except Exception as e:
+				print(f"Error: {e}")
 				pass
 		
 		return True

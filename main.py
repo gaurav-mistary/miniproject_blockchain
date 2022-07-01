@@ -42,9 +42,10 @@ def ping_servers(nodes_list):
         url = f'http://{node}'
         print(f'Pinging url {url}')
         try:
-            output = str(subprocess.check_output(['curl', '-Is', url]).decode('utf-8')).split('\n')[0]
+            # output = str(subprocess.check_output(['curl', '-Is', url]).decode('utf-8')).split('\n')[0]
+            output = True
             print(f'Output: {output}')
-            if output[9:12] == '200':
+            if output:
                 server_response = {
                     'address'   : node,
                     'output'    : 'Up'
@@ -289,6 +290,7 @@ def replace_wip_chain():
 @app.route('/servers')
 def servers():
     if session.get('is_logged_in'):
+        print("User is loggid in")
         nodes = list(blockchain.nodes)
         #nodes.append('127.0.0.1:5004')
         response = ping_servers(nodes)
@@ -381,7 +383,7 @@ def editor_login():
         form_username = form.username.data
         form_password = form.password.data
 
-        if form_username == 'editor1' and form_password == 'password':
+        if form_username in ['editor1', "editor2", "editor3"] and form_password == 'password':
             session['user'] = 'editor'
             session['is_logged_in'] = True
             flash('Login Successfull', 'success')
@@ -479,7 +481,7 @@ def crowd_auditor_login():
         form_username = form.username.data
         form_password = form.password.data
 
-        if form_username == 'crowd_auditor1' and form_password == 'password':
+        if form_username in ['crowd_auditor1', 'crowd_auditor2', 'crowd_auditor3'] and form_password == 'password':
             session['user'] = 'crowd_auditor'
             session['is_logged_in'] = True
             flash('Login Successfull', 'success')
@@ -512,4 +514,8 @@ def flag_misinformation(index):
 
 #-------------------------------------------------------------------------------------------------
 
+
+
 app.run(host=host, port=port)
+
+print("I am after app run")
